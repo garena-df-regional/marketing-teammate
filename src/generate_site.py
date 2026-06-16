@@ -17,112 +17,124 @@ with open(os.path.join(HERE, 'assets', 'logo.png'), 'rb') as _lf:
 def c(v):
     return str(v).strip() if v is not None else ""
 
-# ─── Parse Excel ──────────────────────────────────────────────────────────────
-wb = load_workbook(EXCEL, data_only=True)
-data = {}
-
-# Standard tabs: row1=title, row2=headers, row3+=data
+# ─── Sheet classification (drives the dynamic left-nav) ───────────────────────
 STD = ["scenario","pic","steps","prepare","timeline","qa","links"]
-for name in wb.sheetnames:
-    if name in ('Index','Reg & Local Contactor','Social Media Link'):
-        continue
-    ws = wb[name]
+SPECIAL = {'Index':'index', 'Reg & Local Contactor':'contactor', 'Social Media Link':'sm'}
+SPECIAL_LABEL = {'index':'Index', 'contactor':'Contactor', 'sm':'Social Media Links'}
+
+def slugify(name):
+    s = re.sub(r'[^a-z0-9]+', '_', name.lower()).strip('_')
+    return s or 'tab'
+
+def classify(name):
+    """Return (type, nav-label, nav-id) for a sheet name."""
+    if name in SPECIAL:
+        t = SPECIAL[name]
+        return t, SPECIAL_LABEL[t], '_' + t
+    m = re.match(r'^\s*Tab\s*(\d+)\s*(.*)$', name, re.I)
+    if m:
+        rest = m.group(2).strip()
+        return 'card', ('Tab ' + m.group(1) + (' · ' + rest if rest else '')), 'tab' + m.group(1)
+    return 'generic', name, 'g_' + slugify(name)
+
+def parse_card(ws):
     rows = []
     for r in ws.iter_rows(min_row=3):
         vals = [cell.value for cell in r[:7]]
         if any(v is not None for v in vals):
             row = dict(zip(STD, [c(v) for v in vals]))
-            # Read hyperlinks from all columns and store as col_url
             for i, cell in enumerate(r[:7]):
                 if cell.hyperlink and cell.hyperlink.target:
                     row[STD[i] + '_url'] = cell.hyperlink.target
             rows.append(row)
-    data[name] = rows
+    return rows
 
-# Index tab
-ws = wb['Index']
-idx = []
-for r in ws.iter_rows(min_row=3, values_only=True):
-    if any(c(v) for v in r):
-        idx.append({"tab": c(r[0]), "name": c(r[1]), "desc": c(r[2])})
-data['_index'] = idx
+def parse_index(ws):
+    idx = []
+    for r in ws.iter_rows(min_row=3, values_only=True):
+        if any(c(v) for v in r):
+            idx.append({"tab": c(r[0]), "name": c(r[1]), "desc": c(r[2])})
+    return idx
 
-# Contactor tab
-ws = wb['Reg & Local Contactor']
-team, contactors, sec = [], [], None
-for r in ws.iter_rows(values_only=True):
-    if not any(v for v in r): continue
-    f = c(r[0])
-    if 'Regional Team' in f:  sec = None; continue
-    if f == 'Member':         sec = 'team'; continue
-    if 'Local MKT' in f:     sec = None; continue
-    if f == 'Region':         sec = 'loc'; continue
-    if sec == 'team':
-        team.append({"name": c(r[0]), "resp": c(r[1]), "email": c(r[2])})
-    elif sec == 'loc':
-        contactors.append({"region": c(r[0]), "contact": c(r[1]), "email": c(r[2])})
-data['_contactor'] = {"team": team, "contactors": contactors}
+def parse_contactor(ws):
+    team, contactors, sec = [], [], None
+    for r in ws.iter_rows(values_only=True):
+        if not any(v for v in r): continue
+        f = c(r[0])
+        if 'Regional Team' in f:  sec = None; continue
+        if f == 'Member':         sec = 'team'; continue
+        if 'Local MKT' in f:     sec = None; continue
+        if f == 'Region':         sec = 'loc'; continue
+        if sec == 'team':
+            team.append({"name": c(r[0]), "resp": c(r[1]), "email": c(r[2])})
+        elif sec == 'loc':
+            contactors.append({"region": c(r[0]), "contact": c(r[1]), "email": c(r[2])})
+    return {"team": team, "contactors": contactors}
 
-# Social Media Links
-ws   = wb['Social Media Link']
-sm   = {"off_hdr":[], "off":[], "non_hdr":[], "non":[], "esp_hdr":[], "esp":[]}
-sec  = None
-for r in ws.iter_rows(values_only=True):
-    first = c(r[0])
-    if first == 'Official Channels': sec='off';  continue
-    if first == 'Non-Official':      sec='non';  continue
-    if first == 'Esports Channel':   sec='esp';  continue
-    if not any(v for v in r):        continue
+def parse_sm(ws):
+    sm = {"off_hdr":[], "off":[], "non_hdr":[], "non":[], "esp_hdr":[], "esp":[]}
+    sec = None
+    for r in ws.iter_rows(values_only=True):
+        first = c(r[0])
+        if first == 'Official Channels': sec='off';  continue
+        if first == 'Non-Official':      sec='non';  continue
+        if first == 'Esports Channel':   sec='esp';  continue
+        if not any(v for v in r):        continue
+        if sec == 'off':
+            if first == 'Channel':
+                sm['off_hdr'] = [c(v) for v in r if c(v)]
+            else:
+                sm['off'].append([c(v) if c(v) else '—' for v in r[:len(sm['off_hdr'])]])
+        elif sec == 'non':
+            if first == 'Channel':
+                sm['non_hdr'] = [c(v) for v in r if c(v)]
+            else:
+                sm['non'].append([c(v) if c(v) else '—' for v in r[:len(sm['non_hdr'])]])
+        elif sec == 'esp':
+            if first == 'Channel':
+                sm['esp_hdr'] = [c(v) for v in r if c(v)]
+            else:
+                row_vals = [c(v) if c(v) else '—' for v in r]
+                while row_vals and row_vals[-1] == '—': row_vals.pop()
+                if any(v != '—' for v in row_vals):
+                    sm['esp'].append(row_vals)
+    return sm
 
-    if sec == 'off':
-        if first == 'Channel':
-            sm['off_hdr'] = [c(v) for v in r if c(v)]
-        else:
-            sm['off'].append([c(v) if c(v) else '—' for v in r[:len(sm['off_hdr'])]])
-    elif sec == 'non':
-        if first == 'Channel':
-            sm['non_hdr'] = [c(v) for v in r if c(v)]
-        else:
-            sm['non'].append([c(v) if c(v) else '—' for v in r[:len(sm['non_hdr'])]])
-    elif sec == 'esp':
-        if first == 'Channel':
-            sm['esp_hdr'] = [c(v) for v in r if c(v)]
-        else:
-            row_vals = [c(v) if c(v) else '—' for v in r]
-            while row_vals and row_vals[-1] == '—': row_vals.pop()
-            if any(v != '—' for v in row_vals):
-                sm['esp'].append(row_vals)
-data['_sm'] = sm
+def parse_generic(ws):
+    """Any other sheet: first non-empty row = header, rest = rows (value + hyperlink per cell)."""
+    headers, rows = [], []
+    for r in ws.iter_rows():
+        cells = list(r)
+        vals = [c(cell.value) for cell in cells]
+        while vals and vals[-1] == '': vals.pop()
+        if not any(vals): continue
+        if not headers:
+            headers = vals
+            continue
+        rowcells = []
+        for i in range(len(headers)):
+            cell = cells[i] if i < len(cells) else None
+            text = c(cell.value) if cell is not None else ''
+            url = cell.hyperlink.target if (cell is not None and cell.hyperlink and cell.hyperlink.target) else ''
+            rowcells.append({"text": text, "url": url})
+        rows.append(rowcells)
+    return {"headers": headers, "rows": rows}
 
-# ─── Nav definition ───────────────────────────────────────────────────────────
-NAV = [
-    {"id":"_index",    "label":"Index",              "type":"index"},
-    {"id":"_contactor","label":"Contactor",           "type":"contactor"},
-    {"id":"_sm",       "label":"Social Media Links",  "type":"sm"},
-    {"id":"sep1",      "sep": True},
-    {"id":"tab1",  "label":"Tab 1 · Budget & Plan",  "sheet":"Tab1 Budget Plan & Report"},
-    {"id":"tab2",  "label":"Tab 2 · OM",             "sheet":"Tab2 OM"},
-    {"id":"tab3",  "label":"Tab 3 · Assets",         "sheet":"Tab3 Assets"},
-    {"id":"tab4",  "label":"Tab 4 · Social Media",   "sheet":"Tab4 Social Media"},
-    {"id":"tab5",  "label":"Tab 5 · PR",             "sheet":"Tab5 PR"},
-    {"id":"tab7",  "label":"Tab 7 · Esports",        "sheet":"Tab7 Esports"},
-    {"id":"tab8",  "label":"Tab 8 · Partnership & IP","sheet":"Tab8 Partnership & IP"},
-    {"id":"tab9",  "label":"Tab 9 · In-game Items",  "sheet":"Tab9 In-game Items Requirement"},
-    {"id":"tab10", "label":"Tab 10 · CCP",           "sheet":"Tab10 CCP"},
-    {"id":"tab11", "label":"Tab 11 · Website",       "sheet":"Tab11 Website"},
-    {"id":"tab12", "label":"Tab 12 · Patch Updates", "sheet":"Tab12 Patch Updates"},
-    {"id":"tab13", "label":"Tab 13 · Store Feature", "sheet":"Tab13 Store Feature"},
-]
+PARSERS = {'card':parse_card, 'index':parse_index, 'contactor':parse_contactor,
+           'sm':parse_sm, 'generic':parse_generic}
 
-tabs = {}
-tabs['_index']     = data['_index']
-tabs['_contactor'] = data['_contactor']
-tabs['_sm']        = data['_sm']
-for item in NAV:
-    if 'sheet' in item:
-        tabs[item['id']] = data.get(item['sheet'], [])
+# ─── Build NAV + tabs dynamically, in sheet order ─────────────────────────────
+wb = load_workbook(EXCEL, data_only=True)
+NAV, tabs, first_card = [], {}, False
+for name in wb.sheetnames:
+    typ, label, tid = classify(name)
+    tabs[tid] = PARSERS[typ](wb[name])
+    if typ == 'card' and not first_card:   # separator before the first Tab* page
+        NAV.append({"sep": True})
+        first_card = True
+    NAV.append({"id": tid, "label": label, "type": typ})
 
-DATA_JSON = json.dumps({"nav": NAV, "tabs": tabs}, ensure_ascii=False, indent=None)
+DATA_JSON = json.dumps({"nav": NAV, "tabs": tabs}, ensure_ascii=False)
 
 # ─── HTML template ────────────────────────────────────────────────────────────
 HTML = r"""<!DOCTYPE html>
@@ -285,23 +297,19 @@ function renderCards(rows, query){
   }).join('')}</div>`;
 }
 
-function tabIdFromName(name){
-  const m={
-    'Contactor':'_contactor','SM Links':'_sm','Social Media Links':'_sm',
-    'Budget & Plan':'tab1','OM':'tab2','Assets':'tab3',
-    'Social Media':'tab4','PR':'tab5','Esports':'tab7',
-    'Cross-Industry & IP Partnerships':'tab8','Virtual Item Rewards':'tab9',
-    'CCP':'tab10','Website':'tab11','Patch Updates':'tab12','Store':'tab13'
-  };
-  return m[name]||null;
-}
-
 function renderIndex(rows){
+  function idForRow(r){
+    const t = String(r.tab||'').trim();
+    if(/^\d+$/.test(t) && RAW.nav.find(n=>n.id==='tab'+t)) return 'tab'+t;
+    if(/contactor/i.test(r.name)) return '_contactor';
+    if(/social media|sm link/i.test(r.name)) return '_sm';
+    return null;
+  }
   return `<p class="page-title">Tab Index</p>
   <table class="data-table">
     <thead><tr><th style="width:48px">Tab</th><th style="width:180px">Name</th><th>Description</th></tr></thead>
     <tbody>${rows.map(r=>{
-      const tid=tabIdFromName(r.name);
+      const tid=idForRow(r);
       const nameEl=tid
         ? `<a href="#" onclick="navigate(\'${tid}\');return false;" style="color:#2563eb;font-weight:600;text-decoration:none">${r.name} ↗</a>`
         : `<span style="font-weight:600">${r.name}</span>`;
@@ -368,6 +376,29 @@ function renderSM(sm){
   ${espSection}`;
 }
 
+// ── Generic table (any other sheet: 1st row = header, rest = rows) ─────────────
+function genCell(cell){
+  const text=(cell&&cell.text)||'', url=(cell&&cell.url)||'';
+  if(url)  return `<a href="${url}" target="_blank" rel="noopener">${text||'↗ Link'}</a>`;
+  if(!text) return `<span class="dash">—</span>`;
+  if(/^https?:\/\//.test(text)) return `<a href="${text}" target="_blank" rel="noopener">${text}</a>`;
+  return text;
+}
+function renderGeneric(title, data, query){
+  if(!data||!data.headers||!data.headers.length)
+    return `<p class="page-title">${title}</p><div class="empty-state"><div class="icon">📭</div><p>No content yet — check back later.</p></div>`;
+  const q=(query||'').toLowerCase();
+  const rows=data.rows.filter(row=>{
+    if(!q) return true;
+    return row.some(cc=>(((cc&&cc.text)||'')+' '+((cc&&cc.url)||'')).toLowerCase().includes(q));
+  });
+  if(!rows.length) return `<p class="page-title">${title}</p><div class="no-results">No results for "<strong>${q}</strong>"</div>`;
+  const head=data.headers.map(h=>`<th>${h}</th>`).join('');
+  const body=rows.map(row=>`<tr>${data.headers.map((_,i)=>`<td>${genCell(row[i])}</td>`).join('')}</tr>`).join('');
+  return `<p class="page-title">${title}</p>
+  <table class="data-table"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+}
+
 // ── Navigation ────────────────────────────────────────────────
 let activeId = '_index';
 
@@ -403,11 +434,13 @@ function navigate(id){
 
 function renderContent(query){
   const el = document.getElementById('content');
-  const id  = activeId;
-  if(id === '_index')     { el.innerHTML = renderIndex(RAW.tabs['_index']); return; }
-  if(id === '_contactor') { el.innerHTML = renderContactor(RAW.tabs['_contactor']); return; }
-  if(id === '_sm')        { el.innerHTML = renderSM(RAW.tabs['_sm']); return; }
-  el.innerHTML = renderCards(RAW.tabs[id] || [], query);
+  const item = RAW.nav.find(n => n.id === activeId);
+  const type = item ? item.type : 'card';
+  if(type === 'index')     { el.innerHTML = renderIndex(RAW.tabs[activeId]); return; }
+  if(type === 'contactor') { el.innerHTML = renderContactor(RAW.tabs[activeId]); return; }
+  if(type === 'sm')        { el.innerHTML = renderSM(RAW.tabs[activeId]); return; }
+  if(type === 'generic')   { el.innerHTML = renderGeneric(item.label, RAW.tabs[activeId], query); return; }
+  el.innerHTML = renderCards(RAW.tabs[activeId] || [], query);
 }
 
 // ── Search ────────────────────────────────────────────────────
@@ -450,14 +483,14 @@ def build_markdown(nav, tabs):
     for item in nav:
         if item.get('sep'):
             continue
-        nid, label = item['id'], item['label']
-        if nid == '_index':
+        nid, label, typ = item['id'], item['label'], item.get('type')
+        if typ == 'index':
             L.append(f"## {label}")
-            for r in tabs['_index']:
+            for r in tabs[nid]:
                 L.append(f"- **{r['tab']}. {r['name']}** — {r['desc']}")
             L.append("")
-        elif nid == '_contactor':
-            cc = tabs['_contactor']
+        elif typ == 'contactor':
+            cc = tabs[nid]
             L.append(f"## {label}")
             L.append("### Regional Team")
             for m in cc['team']:
@@ -466,8 +499,8 @@ def build_markdown(nav, tabs):
             for m in cc['contactors']:
                 L.append(f"- **{m['region']}**: {m['contact']} ({m['email']})")
             L.append("")
-        elif nid == '_sm':
-            sm = tabs['_sm']
+        elif typ == 'sm':
+            sm = tabs[nid]
             L.append(f"## {label}")
             def sm_block(title, hdr, rows):
                 if not rows:
@@ -486,6 +519,20 @@ def build_markdown(nav, tabs):
                     cells = [x for x in row if x and x != '—']
                     if cells:
                         L.append("- " + " | ".join(cells))
+            L.append("")
+        elif typ == 'generic':
+            data = tabs[nid]
+            L.append(f"## {label}")
+            headers = data.get('headers', [])
+            for row in data.get('rows', []):
+                pairs = []
+                for i, h in enumerate(headers):
+                    cell = row[i] if i < len(row) else None
+                    val = (cell.get('url') or cell.get('text')) if cell else ''
+                    if val:
+                        pairs.append(f"{h}: {val}")
+                if pairs:
+                    L.append("- " + " | ".join(pairs))
             L.append("")
         else:
             rows = tabs.get(nid, [])

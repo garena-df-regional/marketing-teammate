@@ -31,6 +31,30 @@
 
 ---
 
+## 新增頁簽（不需碰程式）
+
+左側選單會**自動掃描 Google Sheet 的所有分頁**，分頁順序 = 網站左側順序。
+新增分頁後按一次「🔄 Update Website」就會出現，無需改程式或碰 GitHub。
+
+頁簽類型由分頁名稱自動判斷：
+
+| 你要的 | 分頁怎麼命名 | 分頁內容格式 | 網站呈現 |
+|--------|------------|------------|---------|
+| **內容頁簽**（情境細節） | `TabN 名稱`（如 `Tab14 Onboarding`） | 第 1 列標題、第 2 列欄位名（Scenario / Regional PIC / Process Steps / What to Prepare / Timeline / Common Q&A / Related Links）、第 3 列起資料 | 卡片式（可展開） |
+| **通用頁簽**（連結／清單／架構表） | 任意名稱（如 `Important Folder/Sheet/Doc`） | 第 1 列當標題列，第 2 列起資料；任何欄位是連結都會自動可點 | 表格式 |
+
+規則細節：
+- **順序**：左側順序完全跟著 Google Sheet 分頁的左右順序——分頁拖到哪，網站就排到哪。
+- **分隔線**：第一個 `TabN` 卡片頁之前會自動加一條分隔線（通用頁簽排在分隔線上方）。
+- **顯示名**：自動從分頁名產生（`Tab1 Budget Plan & Report` → `Tab 1 · Budget Plan & Report`；通用頁簽直接用分頁全名）。
+- 特殊分頁 `Index` / `Reg & Local Contactor` / `Social Media Link` 有專屬版面，**名稱請勿更動**。
+- `content.md`（給 AI 的純文字版）會自動帶入新分頁。
+
+> 技術實作：`generate_site.py` / `Code.gs` 的 `classify()` 依分頁名分類（特殊／`Tab\d+`→card／其他→generic），
+> `buildData()` 按分頁順序動態產生 NAV，所以無寫死的頁簽清單。
+
+---
+
 ## 改網站版型（需要前端知識）
 
 版型的 source of truth 是 `src/generate_site.py` 裡的 HTML/CSS 模板。

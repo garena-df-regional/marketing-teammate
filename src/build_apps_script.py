@@ -47,29 +47,26 @@ var CONFIG = {
   path:   'index.html'
 };
 
-// Sheets handled specially (not scenario-card tabs)
-var SPECIAL = ['Index', 'Reg & Local Contactor', 'Social Media Link'];
-
 var STD = ['scenario','pic','steps','prepare','timeline','qa','links'];
 
-var NAV = [
-  {id:'_index',     label:'Index',                    type:'index'},
-  {id:'_contactor', label:'Contactor',                type:'contactor'},
-  {id:'_sm',        label:'Social Media Links',       type:'sm'},
-  {id:'sep1',       sep:true},
-  {id:'tab1',  label:'Tab 1 · Budget & Plan',    sheet:'Tab1 Budget Plan & Report'},
-  {id:'tab2',  label:'Tab 2 · OM',               sheet:'Tab2 OM'},
-  {id:'tab3',  label:'Tab 3 · Assets',           sheet:'Tab3 Assets'},
-  {id:'tab4',  label:'Tab 4 · Social Media',     sheet:'Tab4 Social Media'},
-  {id:'tab5',  label:'Tab 5 · PR',               sheet:'Tab5 PR'},
-  {id:'tab7',  label:'Tab 7 · Esports',          sheet:'Tab7 Esports'},
-  {id:'tab8',  label:'Tab 8 · Partnership & IP', sheet:'Tab8 Partnership & IP'},
-  {id:'tab9',  label:'Tab 9 · In-game Items',    sheet:'Tab9 In-game Items Requirement'},
-  {id:'tab10', label:'Tab 10 · CCP',             sheet:'Tab10 CCP'},
-  {id:'tab11', label:'Tab 11 · Website',         sheet:'Tab11 Website'},
-  {id:'tab12', label:'Tab 12 · Patch Updates',   sheet:'Tab12 Patch Updates'},
-  {id:'tab13', label:'Tab 13 · Store Feature',   sheet:'Tab13 Store Feature'}
-];
+// Sheets with bespoke layouts; everything else is a card (Tab\d+) or generic table.
+var SPECIAL = {'Index':'index', 'Reg & Local Contactor':'contactor', 'Social Media Link':'sm'};
+var SPECIAL_LABEL = {index:'Index', contactor:'Contactor', sm:'Social Media Links'};
+
+// Decide a sheet's render type, nav label, and stable id from its name.
+function classify(name) {
+  if (SPECIAL[name]) {
+    var t = SPECIAL[name];
+    return {type: t, label: SPECIAL_LABEL[t], id: '_' + t};
+  }
+  var m = name.match(/^\s*Tab\s*(\d+)\s*(.*)$/i);
+  if (m) {
+    var rest = (m[2] || '').replace(/^\s+|\s+$/g, '');
+    return {type: 'card', label: 'Tab ' + m[1] + (rest ? ' · ' + rest : ''), id: 'tab' + m[1]};
+  }
+  var slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'tab';
+  return {type: 'generic', label: name, id: 'g_' + slug};
+}
 
 var TEMPLATE_B64 = '__TEMPLATE_B64__';
 
@@ -119,71 +116,80 @@ function updateWebsite() {
 }
 
 // ─── Read the spreadsheet into the same data shape as generate_site.py ─────────
+// NAV + tabs are built dynamically in sheet order, so new sheets appear with no
+// code change: `TabN ...` → card page, anything else → generic table page.
 function buildData() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var data = {};
-
-  // Standard scenario tabs
+  var nav = [], tabs = {}, firstCard = false;
   ss.getSheets().forEach(function (sheet) {
-    var name = sheet.getName();
-    if (SPECIAL.indexOf(name) !== -1) return;
-    var lastRow = sheet.getLastRow();
-    if (lastRow < 3) { data[name] = []; return; }
-    var rng = sheet.getRange(3, 1, lastRow - 2, 7);
-    var vals = rng.getValues();
-    var rich = rng.getRichTextValues();
-    var rows = [];
-    for (var i = 0; i < vals.length; i++) {
-      var v = vals[i];
-      if (!v.some(function (x) { return x !== '' && x !== null; })) continue;
-      var row = {};
-      for (var j = 0; j < STD.length; j++) row[STD[j]] = clean(v[j]);
-      // hyperlinks: cell-level link, else first run's link, else =HYPERLINK formula
-      for (var k = 0; k < 7; k++) {
-        var url = extractLink(rich[i][k], sheet, 3 + i, 1 + k);
-        if (url) row[STD[k] + '_url'] = url;
-      }
-      rows.push(row);
-    }
-    data[name] = rows;
+    var cl = classify(sheet.getName());
+    if      (cl.type === 'card')      tabs[cl.id] = parseCard(sheet);
+    else if (cl.type === 'index')     tabs[cl.id] = parseIndex(sheet);
+    else if (cl.type === 'contactor') tabs[cl.id] = readContactor(sheet);
+    else if (cl.type === 'sm')        tabs[cl.id] = readSM(sheet);
+    else                              tabs[cl.id] = parseGeneric(sheet);
+    if (cl.type === 'card' && !firstCard) { nav.push({sep: true}); firstCard = true; }
+    nav.push({id: cl.id, label: cl.label, type: cl.type});
   });
-
-  // Index
-  data['_index'] = readSection(ss, 'Index', 3, function (r) {
-    if (!r.some(function (x) { return clean(x); })) return null;
-    return {tab: clean(r[0]), name: clean(r[1]), desc: clean(r[2])};
-  });
-
-  // Contactor
-  data['_contactor'] = readContactor(ss);
-
-  // Social Media Links
-  data['_sm'] = readSM(ss);
-
-  // Assemble tabs in NAV order
-  var tabs = {_index: data['_index'], _contactor: data['_contactor'], _sm: data['_sm']};
-  NAV.forEach(function (item) {
-    if (item.sheet) tabs[item.id] = data[item.sheet] || [];
-  });
-  return {nav: NAV, tabs: tabs};
+  return {nav: nav, tabs: tabs};
 }
 
-function readSection(ss, sheetName, startRow, mapFn) {
-  var sheet = ss.getSheetByName(sheetName);
-  if (!sheet) return [];
+// Standard 7-column scenario tab (row1=title, row2=header, row3+=data)
+function parseCard(sheet) {
   var lastRow = sheet.getLastRow();
-  if (lastRow < startRow) return [];
-  var vals = sheet.getRange(startRow, 1, lastRow - startRow + 1, Math.max(3, sheet.getLastColumn())).getValues();
+  if (lastRow < 3) return [];
+  var rng = sheet.getRange(3, 1, lastRow - 2, 7);
+  var vals = rng.getValues(), rich = rng.getRichTextValues();
+  var rows = [];
+  for (var i = 0; i < vals.length; i++) {
+    var v = vals[i];
+    if (!v.some(function (x) { return x !== '' && x !== null; })) continue;
+    var row = {};
+    for (var j = 0; j < STD.length; j++) row[STD[j]] = clean(v[j]);
+    for (var k = 0; k < 7; k++) {
+      var url = extractLink(rich[i][k], sheet, 3 + i, 1 + k);
+      if (url) row[STD[k] + '_url'] = url;
+    }
+    rows.push(row);
+  }
+  return rows;
+}
+
+function parseIndex(sheet) {
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 3) return [];
+  var vals = sheet.getRange(3, 1, lastRow - 2, Math.max(3, sheet.getLastColumn())).getValues();
   var out = [];
   for (var i = 0; i < vals.length; i++) {
-    var mapped = mapFn(vals[i]);
-    if (mapped) out.push(mapped);
+    var r = vals[i];
+    if (!r.some(function (x) { return clean(x); })) continue;
+    out.push({tab: clean(r[0]), name: clean(r[1]), desc: clean(r[2])});
   }
   return out;
 }
 
-function readContactor(ss) {
-  var sheet = ss.getSheetByName('Reg & Local Contactor');
+// Generic table: first non-empty row = header, rest = rows (value + hyperlink per cell)
+function parseGeneric(sheet) {
+  var lastRow = sheet.getLastRow(), lastCol = sheet.getLastColumn();
+  if (lastRow < 1 || lastCol < 1) return {headers: [], rows: []};
+  var rng = sheet.getRange(1, 1, lastRow, lastCol);
+  var vals = rng.getValues(), rich = rng.getRichTextValues();
+  var headers = [], rows = [];
+  for (var i = 0; i < vals.length; i++) {
+    var raw = vals[i].map(clean);
+    while (raw.length && raw[raw.length - 1] === '') raw.pop();
+    if (!raw.some(function (x) { return x; })) continue;
+    if (!headers.length) { headers = raw; continue; }
+    var rowcells = [];
+    for (var j = 0; j < headers.length; j++) {
+      rowcells.push({text: clean(vals[i][j]), url: extractLink(rich[i][j], sheet, i + 1, j + 1) || ''});
+    }
+    rows.push(rowcells);
+  }
+  return {headers: headers, rows: rows};
+}
+
+function readContactor(sheet) {
   if (!sheet) return {team: [], contactors: []};
   var vals = sheet.getDataRange().getValues();
   var team = [], contactors = [], sec = null;
@@ -201,8 +207,7 @@ function readContactor(ss) {
   return {team: team, contactors: contactors};
 }
 
-function readSM(ss) {
-  var sheet = ss.getSheetByName('Social Media Link');
+function readSM(sheet) {
   var sm = {off_hdr: [], off: [], non_hdr: [], non: [], esp_hdr: [], esp: []};
   if (!sheet) return sm;
   var vals = sheet.getDataRange().getValues();
@@ -282,21 +287,21 @@ function buildMarkdown(data) {
   L.push('');
   nav.forEach(function (item) {
     if (item.sep) return;
-    var nid = item.id, label = item.label;
-    if (nid === '_index') {
+    var nid = item.id, label = item.label, typ = item.type;
+    if (typ === 'index') {
       L.push('## ' + label);
-      tabs._index.forEach(function (r) { L.push('- **' + r.tab + '. ' + r.name + '** — ' + r.desc); });
+      tabs[nid].forEach(function (r) { L.push('- **' + r.tab + '. ' + r.name + '** — ' + r.desc); });
       L.push('');
-    } else if (nid === '_contactor') {
-      var cc = tabs._contactor;
+    } else if (typ === 'contactor') {
+      var cc = tabs[nid];
       L.push('## ' + label);
       L.push('### Regional Team');
       cc.team.forEach(function (m) { L.push('- **' + m.name + '** (' + m.email + '): ' + m.resp); });
       L.push('### Local MKT Contactors');
       cc.contactors.forEach(function (m) { L.push('- **' + m.region + '**: ' + m.contact + ' (' + m.email + ')'); });
       L.push('');
-    } else if (nid === '_sm') {
-      var sm = tabs._sm;
+    } else if (typ === 'sm') {
+      var sm = tabs[nid];
       L.push('## ' + label);
       var smBlock = function (title, hdr, rows) {
         if (!rows || !rows.length) return;
@@ -318,6 +323,19 @@ function buildMarkdown(data) {
           if (cells.length) L.push('- ' + cells.join(' | '));
         });
       }
+      L.push('');
+    } else if (typ === 'generic') {
+      var g = tabs[nid] || {headers: [], rows: []};
+      L.push('## ' + label);
+      g.rows.forEach(function (row) {
+        var pairs = [];
+        for (var i = 0; i < g.headers.length; i++) {
+          var cell = row[i] || {};
+          var val = cell.url || cell.text || '';
+          if (val) pairs.push(g.headers[i] + ': ' + val);
+        }
+        if (pairs.length) L.push('- ' + pairs.join(' | '));
+      });
       L.push('');
     } else {
       var rows = tabs[nid] || [];
