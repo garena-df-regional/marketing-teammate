@@ -51,6 +51,8 @@ Partnerships
 ## Important Folder/Sheet/Doc
 - Name: In-game Item Request for MKT Campaigns
 Partnership Review | Link: https://docs.google.com/spreadsheets/d/1dagTQdPyMdw9FgqBLsrSxG8iuoGP9d5YmdSrfNZr1DY/edit?pli=1&gid=640741664#gid=640741664
+- Name: Patch Calendar (ingame events timetable for each season | Link: https://docs.google.com/spreadsheets/d/1Koh9d7GRh84Lt98OhGPHfMnjaxulpyUdrvZamYsgymg/edit?pli=1&gid=1698544440#gid=1698544440
+- Name: Ingame items for MKT usage | Link: https://docs.google.com/spreadsheets/d/1AEtWlnqMm7FE2zQoDrDy-6Uc9VmzquHH2h5p2dClyio/edit?pli=1&gid=731797939#gid=731797939
 
 ## Social Media Links
 ### Official Channels
