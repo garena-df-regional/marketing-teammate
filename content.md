@@ -571,3 +571,21 @@ Additional recommendations are handled case by case and are usually time-sensiti
 - **Common Q&A**: Q: What's the difference between IAE and LOC?
 A: IAE (In-App Event) is Apple Store's event feature recommendation slot; LOC is the equivalent event recommendation mechanism on Google Play.
 - **Related Links**: Store Feature
+
+## Tab 14 · Test
+### Test
+- **Regional PIC**: Mye
+- **Process Steps**: TEst
+- **What to Prepare**: Localized copy — character limits:
+- Title: max 30 characters
+- Short description: max 50 characters
+- Full description: max 120 characters
+
+Asset dimensions:
+- IAE (Apple Store): 1920x1080
+- LOC (Google Play): 1080x1920 & 1080x1080
+- **Timeline**: Regional PIC notifies before each new season — Local should complete localization by the given DDL
+Additional recommendations are handled case by case and are usually time-sensitive
+- **Common Q&A**: Q: What's the difference between IAE and LOC?
+A: IAE (In-App Event) is Apple Store's event feature recommendation slot; LOC is the equivalent event recommendation mechanism on Google Play.
+- **Related Links**: Store Feature
