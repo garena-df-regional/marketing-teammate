@@ -438,7 +438,7 @@ A: No, but localized copy must be sent back to Regional for collection.
 ## Tab 9 · In-game Items Requirement
 ### In-game Items Requirement
 (Community / Partnership / Esports)
-- **Regional PIC**: Tim, Hua
+- **Regional PIC**: Hua
 - **Process Steps**: 1. Fill in the Application Google Sheet (see Related Links):
    - In-game mail distribution: fill columns A–N
    - AMS/CDK distribution: fill columns A–R
