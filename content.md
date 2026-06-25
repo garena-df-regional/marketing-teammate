@@ -22,21 +22,27 @@
 
 ## Contactor
 ### Regional Team
-- **Tim** (lintim@garena.com): Forecast
-Quarterly marketing plan & budget submission
-Miscellaneous issues
-- **Ruru** (wuru@garena.com): Quarterly marketing plan & budget submission
+- **Ruru** (wuru@garena.com): Forecast, MKT Plan & S&M Budget
+Quarterly Report
 Peak Day Campaign
 MKT survey/FGD
+Early Access Server
 PR
+Partnerships
+Miscellaneous issues
 - **Jeremy** (hanhy@garena.com): OM
-Store Feature/Contact
+Boosting
+Store Feature
+TikTok/META/Gooogle/Apple Contactor
 - **Hua** (fanh@garena.com): Esports
 TC-made MKT H5
-- **Mye** (liumy@garena.com): Social media
+In-game Items Requirement
+Discord
+- **Mye** (liumy@garena.com): Social media plan
 IP-related Campaign
-Partnerships
-- **Andie** (): CCP
+- **Andie** (chena@garena.com): CCP
+Assets Requirement
+Materials Review Submission
 ### Local MKT Contactors
 - **TW**: Mye (liumy@garena.com)
 - **TH**: Tee (tee.r@garena.com)
@@ -53,6 +59,7 @@ Partnerships
 Partnership Review | Link: https://docs.google.com/spreadsheets/d/1dagTQdPyMdw9FgqBLsrSxG8iuoGP9d5YmdSrfNZr1DY/edit?pli=1&gid=640741664#gid=640741664
 - Name: Patch Calendar (ingame events timetable for each season | Link: https://docs.google.com/spreadsheets/d/1Koh9d7GRh84Lt98OhGPHfMnjaxulpyUdrvZamYsgymg/edit?pli=1&gid=1698544440#gid=1698544440
 - Name: Ingame items for MKT usage | Link: https://docs.google.com/spreadsheets/d/1AEtWlnqMm7FE2zQoDrDy-6Uc9VmzquHH2h5p2dClyio/edit?pli=1&gid=731797939#gid=731797939
+- Name: Social Media Guideline & Schedule | Link: https://docs.google.com/spreadsheets/d/1S1KNhPVazdyfK1zVFNOoXto25LIeJ6Ud4-hK7JVYPzw/edit?pli=1&gid=1502699277#gid=1502699277
 
 ## Social Media Links
 ### Official Channels
@@ -563,16 +570,4 @@ Asset dimensions:
 Additional recommendations are handled case by case and are usually time-sensitive
 - **Common Q&A**: Q: What's the difference between IAE and LOC?
 A: IAE (In-App Event) is Apple Store's event feature recommendation slot; LOC is the equivalent event recommendation mechanism on Google Play.
-- **Related Links**: Store Feature
-
-## Tab 14 · TEST
-### Test 123
-- **Regional PIC**: who
-- **Process Steps**: AaA
-BB
-- **What to Prepare**: 1
-2
-3
-- **Timeline**: nono
-- **Common Q&A**: tet
 - **Related Links**: Store Feature
