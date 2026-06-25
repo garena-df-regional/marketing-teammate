@@ -9,16 +9,14 @@
 - **1. Budget & Plan** — Quarterly plan submission, Peak Day Campaign collaboration, post-event closing report
 - **2. OM** — OM asset localization, media buying strategy, post boosting process
 - **3. Assets** — Non-IP social asset review, in-game asset review, raw material request
-- **4. Social Media** — Social media quarterly report
-- **5. PR** — Regional press release localization, local-authored PR review process
-- **7. Esports** — Tournament plan submission, Custom Room request, Server Account request, quarterly esports report, monthly tournament details update in the mastersheet
-- **9. Virtual Item Rewards** — In-game item reward application (Community / Partnership / Esports)
-- **8. Cross-Industry & IP Partnerships** — BD cross-industry partnership proposal, IP collaboration execution
-- **10. CCP** — CCP quarterly report & monthly performance data submission
-- **11. Website** — Website issue handling & escalation contact
-- **12. Patch Updates** — Store graphics production, Early Access arrangement, in-game event calendar, social sentiment collection
-- **13. Store** — Apple Store IAE & Google Play LOC localization
-- **14. TEST** — A1234
+- **4. PR** — Regional press release localization, local-authored PR review process
+- **5. Esports** — Tournament plan submission, Custom Room request, Server Account request, quarterly esports report, monthly tournament details update in the mastersheet
+- **6. Virtual Item Rewards** — In-game item reward application (Community / Partnership / Esports)
+- **7. Cross-Industry & IP Partnerships** — BD cross-industry partnership proposal, IP collaboration execution
+- **8. CCP** — CCP quarterly report & monthly performance data submission
+- **9. Website** — Website issue handling & escalation contact
+- **10. Patch Updates** — Store graphics production, Early Access arrangement, in-game event calendar, social sentiment collection
+- **11. Store** — Apple Store IAE & Google Play LOC localization
 
 ## Contactor
 ### Regional Team
@@ -87,7 +85,7 @@ Partnership Review | Link: https://docs.google.com/spreadsheets/d/1dagTQdPyMdw9F
 ## Tab 1 · Budget Plan & Report
 ### Quarterly Marketing Plan
 Budget Request
-- **Regional PIC**: Tim, Ruru
+- **Regional PIC**: Ruru
 - **Process Steps**: 1. Regional sends notification in the 2nd month of the previous quarter, attaching Plan Template and Budget Sheet link with submission deadline
 2. Local team uses Template to write quarterly marketing plan (strategy overview, KPI summary, details for Peak Day / SOL / CCP / Esports campaigns)
 3. Local team adds a new tab in the Budget Sheet, filling in monthly amounts, budget logic, and KPIs for each line item
@@ -223,7 +221,7 @@ A: Currently managed by Jeremy. A self-service web tool is being developed to al
 
 ## Tab 3 · Assets
 ### Non-IP Social Media Asset Review (Operator Appearance)
-- **Regional PIC**: Tim
+- **Regional PIC**: Andie
 - **Process Steps**: 1. Local fills in the Out-of-game Asset Review Google Sheet (columns B–H) and uploads assets to the designated folder
 2. Regional (Tim) consolidates daily and submits to TC
 3. TC feedback is translated and updated in column N
@@ -251,7 +249,7 @@ A: No, we can not include "nationality" and "nation flags" in all posting.
 - **Related Links**: [DF] Non IP asset review
 
 ### In-game Asset Review (All In-game Visuals — No Exceptions)
-- **Regional PIC**: Mye
+- **Regional PIC**: Mye, Andie
 - **Process Steps**: 1. Local fills in the In-game Asset Review Google Sheet (columns B–I) and uploads assets to the designated folder
 2. Regional (Mye) consolidates daily and submits to TC
 3. TC feedback (with Chinese translation) is updated in column K
@@ -278,7 +276,7 @@ A: TC reviews daily; feedback is emailed at 11:00–12:00 and 18:00–19:00 GMT+
 - **Related Links**: [DF] Non IP asset review
 
 ### Raw Material Request (Official Game Assets for Marketing Production)
-- **Regional PIC**: Ruru
+- **Regional PIC**: Ruru, Andie
 - **Process Steps**: 1. Local fills in the Raw Material Request Google Sheet (required: columns A–G)
 2. Ruru consolidates and submits the request to TC
 3. TC provides the requested assets (~2–3 business days)
@@ -302,10 +300,7 @@ Q: Where can I find the asset library?
 A: Asset library location will be added once fully set up.
 - **Related Links**: [DF] GA MKT Sheet - External
 
-## Tab 4 · Social Media
-_(No content yet.)_
-
-## Tab 5 · PR
+## Tab 4 · PR
 ### Regional Press Release — Localization
 - **Regional PIC**: Ruru
 - **Process Steps**: 1. Ruru provides TC- and Garena Reg PR-approved press release
@@ -342,7 +337,7 @@ Q: What does TC typically scrutinize?
 A: Brand tone, sensitive topics (politics, religion, etc.), data accuracy (no errors in numbers or reward descriptions), and whether any unreleased game information is disclosed.
 - **Related Links**: 02 - PR
 
-## Tab 7 · Esports
+## Tab 5 · Esports
 ### Tournament Plan Submission
 - **Regional PIC**: Hua
 - **Process Steps**: 1. Fill in the Mastersheet 'Tournament Details' tab (columns A–Y) monthly
@@ -387,9 +382,9 @@ Q: Does a mobile patch update affect the esports server?
 A: Mobile and PC patch timelines are synchronized — keep patch schedules in mind when planning events.
 - **Related Links**: [DF]PC Esports Server Account Application
 
-## Tab 8 · Partnership & IP
+## Tab 6 · Partnership & IP
 ### BD Cross-Industry Partnership Proposal
-- **Regional PIC**: Tim, Mye
+- **Regional PIC**: Ruru
 - **Process Steps**: 1. Local fills in the application form (Status / Region / Proposer / Submission Date / Brand intro / Collaboration direction & details / Launch period / Evaluation Deadline)
 2. Regional (Mye) consolidates and submits to TC in weekly batches
 3. TC reviews (~10 business days)
@@ -435,7 +430,7 @@ Q: Does resizing an approved asset or translating approved copy require re-revie
 A: No, but localized copy must be sent back to Regional for collection.
 - **Related Links**: 21 - IP collaboration
 
-## Tab 9 · In-game Items Requirement
+## Tab 7 · In-game Items Requirement
 ### In-game Items Requirement
 (Community / Partnership / Esports)
 - **Regional PIC**: Hua
@@ -459,7 +454,7 @@ Q: How should rewards be selected?
 A: Revenue items (incl. DT, legendary skin) can only be distributed in small quantities. Prefer consumable items — refer to the available item list for guidance.
 - **Related Links**: [DF] In-game Item Request for MKT Campaigns & Partnership Review
 
-## Tab 10 · CCP
+## Tab 8 · CCP
 ### Monthly Performance Data Submission
 - **Regional PIC**: Hua
 - **Process Steps**: Monthly Data:
@@ -471,7 +466,7 @@ A: Revenue items (incl. DT, legendary skin) can only be distributed in small qua
 A: Yes, but mark them as approximate (～) in the notes. Notify Regional to update once confirmed.
 - **Related Links**: CCP Post-Mortem Template (link provided by Regional PIC)
 
-## Tab 11 · Website
+## Tab 9 · Website
 ### Website Issue Handling & Escalation
 - **Regional PIC**: Ruru
 - **Process Steps**: 1. Identify issue type:
@@ -484,7 +479,7 @@ A: Yes, but mark them as approximate (～) in the notes. Notify Regional to upda
 A: Issues affecting the entire website or multiple markets — not a market-specific configuration problem. Examples: page fails to load, site-wide functional failure, system-level errors.
 - **Related Links**: —
 
-## Tab 12 · Patch Updates
+## Tab 10 · Patch Updates
 ### Store Graphics Localization (Apple Store + Google Play)
 - **Regional PIC**: Ruru
 - **Process Steps**: 1. Regional PIC sends localization brief with DDL, Mastersheet link, banner/video copy scripts, and Word Card template (PSD)
@@ -511,7 +506,7 @@ A: Both Apple Store and Google Play require banners and videos — specification
 - **Related Links**: 06 - Store Assets
 
 ### Early Access Server Arrangement for KOL Preview
-- **Regional PIC**: Tim
+- **Regional PIC**: Ruru
 - **Process Steps**: 1. Regional PIC notifies each Local of the Early Access window, account list (Google Sheet), and client download method (PC Launcher / Android APK)
 2. Local MKT selects accounts from the list for their region, assigns to KOLs, and marks 'allocated' in column H of the list
 3. Regional PIC notifies TC to send virtual item rewards to the accounts (typically on the evening Early Access opens)
@@ -549,33 +544,15 @@ Sheet link provided by Regional PIC at each patch update
 - **Common Q&A**: —
 - **Related Links**: Sheet link provided by Regional PIC at each patch update
 
-## Tab 13 · Store Feature
+## Tab 11 · Store Feature
 ### Apple Store IAE
 Google Play LOC
 Localization
-- **Regional PIC**: Ruru, Jeremy
+- **Regional PIC**: Jeremy
 - **Process Steps**: 1. Regional PIC reviews IAE & LOC items before each new season and notifies Local via Mastersheet
 2. Local fills in localized copy (title, short description, full description)
 3. Local provides localized assets (if required)
 4. Regional PIC consolidates and submits to both platforms
-- **What to Prepare**: Localized copy — character limits:
-- Title: max 30 characters
-- Short description: max 50 characters
-- Full description: max 120 characters
-
-Asset dimensions:
-- IAE (Apple Store): 1920x1080
-- LOC (Google Play): 1080x1920 & 1080x1080
-- **Timeline**: Regional PIC notifies before each new season — Local should complete localization by the given DDL
-Additional recommendations are handled case by case and are usually time-sensitive
-- **Common Q&A**: Q: What's the difference between IAE and LOC?
-A: IAE (In-App Event) is Apple Store's event feature recommendation slot; LOC is the equivalent event recommendation mechanism on Google Play.
-- **Related Links**: Store Feature
-
-## Tab 14 · Test
-### Test
-- **Regional PIC**: Mye
-- **Process Steps**: TEst
 - **What to Prepare**: Localized copy — character limits:
 - Title: max 30 characters
 - Short description: max 50 characters
