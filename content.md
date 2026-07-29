@@ -11,8 +11,8 @@
 - **3. Assets** — Non-IP social asset review, in-game asset review, raw material request
 - **4. PR** — Regional press release localization, local-authored PR review process
 - **5. Esports** — Tournament plan submission, Custom Room request, Server Account request, quarterly esports report, monthly tournament details update in the mastersheet
-- **6. Virtual Item Rewards** — In-game item reward application (Community / Partnership / Esports)
-- **7. Cross-Industry & IP Partnerships** — BD cross-industry partnership proposal, IP collaboration execution
+- **6. Partnership & IP** — BD cross-industry partnership proposal, IP collaboration execution
+- **7. In-game Items Requirement** — In-game item reward application (Community / Partnership / Esports)
 - **8. CCP** — CCP quarterly report & monthly performance data submission
 - **9. Website** — Website issue handling & escalation contact
 - **10. Patch Updates** — Store graphics production, Early Access arrangement, in-game event calendar, social sentiment collection
@@ -251,7 +251,7 @@ A: No, we can not include "nationality" and "nation flags" in all posting.
 ### In-game Asset Review (All In-game Visuals — No Exceptions)
 - **Regional PIC**: Mye, Andie
 - **Process Steps**: 1. Local fills in the In-game Asset Review Google Sheet (columns B–I) and uploads assets to the designated folder
-2. Regional (Mye) consolidates daily and submits to TC
+2. Regional (Andie) consolidates daily and submits to TC
 3. TC feedback (with Chinese translation) is updated in column K
 4. Regional sends email notifications to all markets twice daily: 11:00–12:00 and 18:00–19:00 GMT+8
 5. Assets can only go live after approval
@@ -273,14 +273,14 @@ A: ① Too AI-generated (TC is increasingly sensitive — refine until it doesn'
 
 Q: How quickly will I receive feedback?
 A: TC reviews daily; feedback is emailed at 11:00–12:00 and 18:00–19:00 GMT+8. For urgent items, contact Mye directly on Seatalk.
-- **Related Links**: [[DF] Non IP asset review](https://docs.google.com/spreadsheets/d/1wa8A5OdVBgk9ouc96gyoqULiZKGZCPttq4KfM9cS3KA/edit)
+- **Related Links**: [[DF] Non IP asset review](https://docs.google.com/spreadsheets/d/1wa8A5OdVBgk9ouc96gyoqULiZKGZCPttq4KfM9cS3KA/edit?gid=1557355396#gid=1557355396)
 
 ### Raw Material Request (Official Game Assets for Marketing Production)
-- **Regional PIC**: Ruru, Andie
+- **Regional PIC**: Andie
 - **Process Steps**: 1. Local fills in the Raw Material Request Google Sheet (required: columns A–G)
-2. Ruru consolidates and submits the request to TC
+2. Andie consolidates and submits the request to TC
 3. TC provides the requested assets (~2–3 business days)
-4. Ruru updates the asset library every Wednesday and Friday (GMT+8), and updates column H (Status) and column I (asset link)
+4. Andie updates the asset library every Wednesday and Friday (GMT+8), and updates column H (Status) and column I (asset link)
 - **What to Prepare**: Column A – Region: Applicant's market
 Column B – PIC: Applicant's name
 Column C – Type: Asset type (Static / Dynamic)
@@ -288,7 +288,7 @@ Column D – Asset Name: Asset name (e.g., AKM, Tempest, Scope)
 Column E – Item ID: In-game item ID (REQUIRED — requests without Item ID will be rejected)
 Column F – Purpose: Usage description (for which activity or marketing production)
 Column G – Preview: Insert preview image (REQUIRED — requests without image will be rejected)
-- **Timeline**: Submit at least 3 business days in advance to ensure Ruru can distribute on the same week's Wednesday or Friday
+- **Timeline**: Submit at least 3 business days in advance to ensure Andie can distribute on the same week's Wednesday or Friday
 If TC needs additional time, actual wait may extend to 5–7 days
 - **Common Q&A**: Q: Is Item ID mandatory?
 A: Yes — without Item ID, TC cannot identify the asset and the request will be rejected. If unsure, check in-game or ask Ruru.
