@@ -246,10 +246,10 @@ A: No, but localized copy must be sent back to Regional for collection.
 
 Q: Can we tell users the nationality of the operators?
 A: No, we can not include "nationality" and "nation flags" in all posting.
-- **Related Links**: [[DF] Non IP asset review](https://docs.google.com/spreadsheets/d/1wa8A5OdVBgk9ouc96gyoqULiZKGZCPttq4KfM9cS3KA/edit)
+- **Related Links**: [[DF] Non IP asset review(Social Media)](https://docs.google.com/spreadsheets/d/1wa8A5OdVBgk9ouc96gyoqULiZKGZCPttq4KfM9cS3KA/edit?gid=1043618357#gid=1043618357)
 
 ### In-game Asset Review (All In-game Visuals — No Exceptions)
-- **Regional PIC**: Mye, Andie
+- **Regional PIC**: Andie
 - **Process Steps**: 1. Local fills in the In-game Asset Review Google Sheet (columns B–I) and uploads assets to the designated folder
 2. Regional (Andie) consolidates daily and submits to TC
 3. TC feedback (with Chinese translation) is updated in column K
@@ -273,7 +273,7 @@ A: ① Too AI-generated (TC is increasingly sensitive — refine until it doesn'
 
 Q: How quickly will I receive feedback?
 A: TC reviews daily; feedback is emailed at 11:00–12:00 and 18:00–19:00 GMT+8. For urgent items, contact Mye directly on Seatalk.
-- **Related Links**: [[DF] Non IP asset review](https://docs.google.com/spreadsheets/d/1wa8A5OdVBgk9ouc96gyoqULiZKGZCPttq4KfM9cS3KA/edit?gid=1557355396#gid=1557355396)
+- **Related Links**: [[DF] Non IP asset review(In game)](https://docs.google.com/spreadsheets/d/1wa8A5OdVBgk9ouc96gyoqULiZKGZCPttq4KfM9cS3KA/edit?gid=1557355396#gid=1557355396)
 
 ### Raw Material Request (Official Game Assets for Marketing Production)
 - **Regional PIC**: Andie
