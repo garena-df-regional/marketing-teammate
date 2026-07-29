@@ -223,7 +223,7 @@ A: Currently managed by Jeremy. A self-service web tool is being developed to al
 ### Non-IP Social Media Asset Review (Operator Appearance)
 - **Regional PIC**: Andie
 - **Process Steps**: 1. Local fills in the Out-of-game Asset Review Google Sheet (columns B–H) and uploads assets to the designated folder
-2. Regional (Tim) consolidates daily and submits to TC
+2. Regional (Andie) consolidates daily and submits to TC
 3. TC feedback is translated and updated in column N
 4. Regional sends email notifications to all markets twice daily: 11:00–12:00 and 18:00–19:00 GMT+8
 5. Assets can only be published after approval
