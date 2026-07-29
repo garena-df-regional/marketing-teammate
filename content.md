@@ -246,7 +246,7 @@ A: No, but localized copy must be sent back to Regional for collection.
 
 Q: Can we tell users the nationality of the operators?
 A: No, we can not include "nationality" and "nation flags" in all posting.
-- **Related Links**: [DF] Non IP asset review
+- **Related Links**: [[DF] Non IP asset review](https://docs.google.com/spreadsheets/d/1wa8A5OdVBgk9ouc96gyoqULiZKGZCPttq4KfM9cS3KA/edit)
 
 ### In-game Asset Review (All In-game Visuals — No Exceptions)
 - **Regional PIC**: Mye, Andie
@@ -273,7 +273,7 @@ A: ① Too AI-generated (TC is increasingly sensitive — refine until it doesn'
 
 Q: How quickly will I receive feedback?
 A: TC reviews daily; feedback is emailed at 11:00–12:00 and 18:00–19:00 GMT+8. For urgent items, contact Mye directly on Seatalk.
-- **Related Links**: [DF] Non IP asset review
+- **Related Links**: [[DF] Non IP asset review](https://docs.google.com/spreadsheets/d/1wa8A5OdVBgk9ouc96gyoqULiZKGZCPttq4KfM9cS3KA/edit)
 
 ### Raw Material Request (Official Game Assets for Marketing Production)
 - **Regional PIC**: Ruru, Andie
@@ -298,7 +298,7 @@ A: ~2–3 business days. Ruru updates the asset library on Wednesdays and Friday
 
 Q: Where can I find the asset library?
 A: Asset library location will be added once fully set up.
-- **Related Links**: [DF] GA MKT Sheet - External
+- **Related Links**: [[DF] GA MKT Sheet - External](https://docs.google.com/spreadsheets/d/1gh4QVwo0y30HYJe3RbIbJXfC87-kL0CW6CNKhI3sYZo/edit)
 
 ## Tab 4 · PR
 ### Regional Press Release — Localization
